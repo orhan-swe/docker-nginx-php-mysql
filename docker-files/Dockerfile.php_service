@@ -1,0 +1,7 @@
+ARG PHP_VERSION
+#RUN echo $PHP_VERSION
+FROM nanoninja/php-fpm:$PHP_VERSION
+#FROM nanoninja/php-fpm:8.1
+
+#install composer:
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
