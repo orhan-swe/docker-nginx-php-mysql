@@ -170,6 +170,9 @@ If you modify the host name, do not forget to add it to the `/etc/hosts` file.
     # }
     ```
 
+    Test your rertbot config:
+    > docker-compose run --rm  certbot certonly --webroot --webroot-path /etc/ssl/certbot/ --dry-run -d example.org
+
 ___
 
 ## Configure Xdebug
