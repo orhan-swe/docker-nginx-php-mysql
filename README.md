@@ -171,7 +171,14 @@ If you modify the host name, do not forget to add it to the `/etc/hosts` file.
     ```
 
     Test your rertbot config:
-    > docker-compose run --rm  certbot certonly --webroot --webroot-path /etc/ssl/certbot/ --dry-run -d example.org
+    create new file, for example  etc/ngingx/kfc.conf
+    For test:
+    > sudo docker-compose run --rm  certbot certonly --webroot --webroot-path /var/www/certbot/ --debug-challenges --dry-run -d example.org -v
+    For run:
+    > sudo docker-compose run --rm  certbot certonly --webroot --webroot-path /var/www/certbot/ -d example.org
+    
+    edit etc/nginx/kfc.conf so ssl is enabled
+
 
 ___
 
