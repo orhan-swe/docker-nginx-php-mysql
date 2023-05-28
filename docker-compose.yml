@@ -3,10 +3,10 @@ services:
     web:
         image: nginx:alpine
         volumes:
-            - "./etc/nginx_include:/etc/nginx_include:ro"
             #- "./etc/nginx:/etc/nginx/conf.d"
-            - "./etc/nginx_local:/etc/nginx/conf.d"
-            - "./etc/ssl:/etc/ssl"
+            - "./etc/nginx_local:/etc/nginx/conf.d/:ro"
+            - "./etc/ssl/www/:/var/www/certbot/:ro"
+            - "./etc/letsencrypt/:/etc/nginx/ssl/:ro"
             - "./web:/var/www/html"
         ports:
             - "8008:80"
@@ -19,7 +19,7 @@ services:
     certbot:
         image: certbot/certbot:latest
         volumes:
-            - ./etc/ssl/:/etc/ssl/:rw
+            - ./etc/ssl/www:/var/www/certbot:rw
             - ./etc/letsencrypt/:/etc/letsencrypt/:rw
     php:
         # image: nanoninja/php-fpm:${PHP_VERSION}
