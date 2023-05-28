@@ -3,6 +3,7 @@ services:
     web:
         image: nginx:alpine
         volumes:
+            - "./etc/nginx_include:/etc/nginx_include"
             #- "./etc/nginx:/etc/nginx/conf.d"
             - "./etc/nginx_local:/etc/nginx/conf.d/:ro"
             - "./etc/ssl/www/:/var/www/certbot/:ro"
