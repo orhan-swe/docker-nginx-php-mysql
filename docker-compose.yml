@@ -9,6 +9,7 @@ services:
             - "./etc/ssl/www/:/var/www/certbot/:ro"
             - "./etc/letsencrypt/:/etc/nginx/ssl/:ro"
             - "./web:/var/www/html"
+            - "./etc/log/:/var/log/nginx/:rw"
         ports:
             - "8008:80"
             #- "8009:8081"

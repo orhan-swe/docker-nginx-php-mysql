@@ -171,13 +171,19 @@ If you modify the host name, do not forget to add it to the `/etc/hosts` file.
     ```
 
     Test your rertbot config:
-    create new file, for example  etc/ngingx/kfc.conf
+    in to web folder od:
+    > git clone git@github.com:orhan-swe/TastyIgniter.git proj_name
+
+    create new file, for example  etc/ngingx/proj_name.conf
     For test:
-    > sudo docker-compose run --rm  certbot certonly --webroot --webroot-path /var/www/certbot/ --debug-challenges --dry-run -d example.org -v
+    > sudo docker-compose run --rm  certbot certonly --webroot --webroot-path /var/www/certbot/ --debug-challenges --dry-run -d proj_name.restoran.nu -v
     For run:
-    > sudo docker-compose run --rm  certbot certonly --webroot --webroot-path /var/www/certbot/ -d example.org
+    > sudo docker-compose run --rm  certbot certonly --webroot --webroot-path /var/www/certbot/ -d proj_name.restoran.nu
     
     edit etc/nginx/kfc.conf so ssl is enabled
+
+    > sudo docker-compose run --workdir="/var/www/html/proj_name" php composer install
+    > sudo docker-compose run --workdir="/var/www/html/proj_name" php php artisan igniter:install
 
 
 ___
