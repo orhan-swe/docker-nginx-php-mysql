@@ -199,6 +199,9 @@ If you modify the host name, do not forget to add it to the `/etc/hosts` file.
     > docker exec -it ls4gs84n bash
     > chown -R www-data /var/www/html/proj_name/
 
+    clear cache:
+    > docker-compose run --workdir="/var/www/html/proj_name" php php artisan cache:clear 
+
 
 ___
 

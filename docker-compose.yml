@@ -27,6 +27,8 @@ services:
         # image: nanoninja/php-fpm:${PHP_VERSION}
         env_file:
             - ".env"
+        extra_hosts:
+            - "host.docker.internal:172.17.0.1"
         expose: 
             # this is so nginx service can conect to this service on port 9000
             # this service will connect back to our host machine on port 9003!
