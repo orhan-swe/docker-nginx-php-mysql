@@ -171,8 +171,13 @@ If you modify the host name, do not forget to add it to the `/etc/hosts` file.
     ```
 
     Test your rertbot config:
+
     in to web folder od:
     > git clone git@github.com:orhan-swe/TastyIgniter.git proj_name
+
+    create database in workbench (make sure dev user has access)
+
+    run all the docker-compose commands from the root of docker folder!!!
 
     create new file, for example  etc/ngingx/proj_name.conf
     For test:
@@ -184,6 +189,15 @@ If you modify the host name, do not forget to add it to the `/etc/hosts` file.
 
     > sudo docker-compose run --workdir="/var/www/html/proj_name" php composer install
     > sudo docker-compose run --workdir="/var/www/html/proj_name" php php artisan igniter:install
+    > cd web/proj_name
+
+    server will have to get access to some folders, solution:
+    > sudo docker-compose run --workdir="/var/www/html" php chown -R www-data ./proj_name/
+    alternative solution:
+    sudo docker-compse ps
+    choose the php container
+    > docker exec -it ls4gs84n bash
+    > chown -R www-data /var/www/html/proj_name/
 
 
 ___
