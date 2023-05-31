@@ -44,7 +44,7 @@ services:
             # - "./etc/php/php.ini:/usr/local/etc/php/conf.d/php-cli.ini"
             - "./web:/var/www/html"
         environment:
-            #- XDEBUG_MODE=debug
+            - XDEBUG_MODE=debug
             - XDEBUG_CONFIG=client_host=host.docker.internal client_port=9003
             # - APP_URL=https://tasty.example.com
             # - APP_URL=http://localhost:8008
