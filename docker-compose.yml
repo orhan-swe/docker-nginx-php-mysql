@@ -18,11 +18,14 @@ services:
         depends_on:
             - php
             - mysqldb
+        command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
     certbot:
         image: certbot/certbot:latest
         volumes:
             - ./etc/ssl/www:/var/www/certbot:rw
             - ./etc/letsencrypt/:/etc/letsencrypt/:rw
+        # for certbot reviewal
+        entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
     php:
         # image: nanoninja/php-fpm:${PHP_VERSION}
         env_file:
@@ -91,7 +94,7 @@ services:
             - "8989:3306"
         volumes:
             - "./data/db/mysql:/var/lib/mysql"
-    # redis:
-    #     image: redis:6
-    #     command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
-    #     restart: always
+    redis:
+        image: redis:6
+        command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
+        restart: always

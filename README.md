@@ -194,10 +194,15 @@ If you modify the host name, do not forget to add it to the `/etc/hosts` file.
     server will have to get access to some folders, solution:
     > sudo docker-compose run --workdir="/var/www/html" php chown -R www-data ./proj_name/
     alternative solution:
-    sudo docker-compse ps
+    > sudo docker-compse ps
     choose the php container
+    > docker exec -it docker-nginx-php-mysql-php-1 bash
+    or:
     > docker exec -it ls4gs84n bash
+    
     > chown -R www-data /var/www/html/proj_name/
+    > sudo chmod -R g=rwx ./proj_name
+    > sudo chmod -R og=rwx TastyIgniter/
 
     clear cache:
     > docker-compose run --workdir="/var/www/html/proj_name" php php artisan cache:clear 
