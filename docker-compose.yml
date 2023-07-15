@@ -11,22 +11,24 @@ services:
             - "./web:/var/www/html"
             - "./etc/log/:/var/log/nginx/:rw"
         ports:
-            - "8008:80"
+            - "8044:80"
             #- "8009:8081"
-            - "3000:443"
+            - "4000:443"
         restart: always
         depends_on:
             - php
-            - mysqldb
+            - mysql
+            - redis
         command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
-    certbot:
-        image: certbot/certbot:latest
-        volumes:
-            - ./etc/ssl/www:/var/www/certbot:rw
-            - ./etc/letsencrypt/:/etc/letsencrypt/:rw
-        # for certbot reviewal
-        entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    # certbot:
+    #     image: certbot/certbot:latest
+    #     volumes:
+    #         - ./etc/ssl/www:/var/www/certbot:rw
+    #         - ./etc/letsencrypt/:/etc/letsencrypt/:rw
+    #     # for certbot reviewal
+    #     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
     php:
+        # we will u use the Dockerfile.php_servide to load the image also
         # image: nanoninja/php-fpm:${PHP_VERSION}
         env_file:
             - ".env"
@@ -52,13 +54,15 @@ services:
             # - APP_URL=https://tasty.example.com
             # - APP_URL=http://localhost:8008
             # - DB_DATABASE=${MYSQL_DATABASE1}
-            - APP_NAME=HranaSnova
+            - APP_NAME=${APP_NAME}
             - APP_ENV=local
             - APP_DEBUG=true
             - DB_CONNECTION=mysql
-            - DB_HOST=${MYSQL_HOST}
+            - DB_HOST=mysql
             - DB_USERNAME=${MYSQL_USER}
             - DB_PASSWORD=${MYSQL_PASSWORD}
+            - REDIS_HOST=redis
+            - REDIS_PASSWORD=${REDIS_PASSWORD}
             #- CACHE_DRIVER=redis
             #- REDIS_HOST=redis
 # composer:
@@ -79,9 +83,8 @@ services:
 #     restart: always
 #     depends_on:
 #         - mysqldb
-    mysqldb:
+    mysql:
         image: mysql:${MYSQL_VERSION}
-        container_name: ${MYSQL_HOST}
         restart: always
         env_file:
             - ".env"
@@ -91,10 +94,16 @@ services:
             - MYSQL_USER=${MYSQL_USER}
             - MYSQL_PASSWORD=${MYSQL_PASSWORD}
         ports:
-            - "8989:3306"
+            - "8980:3306"
         volumes:
             - "./data/db/mysql:/var/lib/mysql"
     redis:
-        image: redis:6
-        command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
+        image: redis:6.2-alpine
         restart: always
+        env_file:
+            - ".env"
+        ports:
+            - '6379:6379'
+        command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
+        volumes:
+            - ./data/redis:/data
