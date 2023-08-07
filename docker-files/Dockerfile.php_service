@@ -28,6 +28,6 @@ RUN chmod 0644 /etc/cron.d/my-cron-file
 RUN crontab /etc/cron.d/my-cron-file
 # Create the log file to be able to run tail
 RUN touch /var/log/cron.log
-# Creating entry point for cron 
-ENTRYPOINT ["cron", "-f"]
+# Creating entry point for cron and php-fpm service
+CMD cron && docker-php-entrypoint php-fpm
 
