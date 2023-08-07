@@ -3,7 +3,31 @@ ARG PHP_VERSION
 FROM nanoninja/php-fpm:$PHP_VERSION
 #FROM nanoninja/php-fpm:8.1
 
+# Install dependencies
+# needed on old versions of the image
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    cron \
+    vim \
+    git \
+    supervisor
+
 #install composer:
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+#### SET UP CRON #####
+# Copying script file into container
+# COPY cron-script.sh .
+# Giving executable permission to script file
+# RUN chmod +x cron-script.sh
+# Adding crontab to the appropriate location
+ADD crontab /etc/cron.d/my-cron-file
+# Giving permission to crontab file
+RUN chmod 0644 /etc/cron.d/my-cron-file
+# Running crontab
+RUN crontab /etc/cron.d/my-cron-file
+# Create the log file to be able to run tail
 RUN touch /var/log/cron.log
+# Creating entry point for cron 
+ENTRYPOINT ["cron", "-f"]
+

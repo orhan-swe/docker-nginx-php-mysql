@@ -1,0 +1,8 @@
+# Weekly autoclean and update
+# 0 0 * * 0 apt-get autoremove && apt-get autoclean
+
+# every minute, check if any tasks need to be performed
+* * * * * /usr/local/bin/php /var/www/html/jobbswiper/artisan schedule:run >> /var/log/cron.log 2>&1
+
+# every day at 21:00, update composer 
+# 0 21 * * * /usr/local/bin/composer self-update --1
