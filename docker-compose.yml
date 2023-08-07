@@ -44,6 +44,7 @@ services:
             args:
                 PHP_VERSION: ${PHP_VERSION}
         restart: always
+        command: "/bin/sh -c 'while :; do sleep 10s & wait $${!}; /usr/local/bin/php /var/www/html/jobbswiper/artisan schedule:run >> /var/log/cron.log 2>&1; done;'"
         volumes:
             - "./etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini"
             # - "./etc/php/php.ini:/usr/local/etc/php/conf.d/php-cli.ini"

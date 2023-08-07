@@ -5,3 +5,5 @@ FROM nanoninja/php-fpm:$PHP_VERSION
 
 #install composer:
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+RUN touch /var/log/cron.log
